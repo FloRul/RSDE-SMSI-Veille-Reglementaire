@@ -3,20 +3,20 @@ resource "aws_apigatewayv2_api" "notification_api" {
   protocol_type = "HTTP"
 }
 
-resource "aws_apigatewayv2_integration" "this" {
+resource "aws_apigatewayv2_integration" "integration" {
   api_id           = aws_apigatewayv2_api.notification_api.id
   integration_type = "AWS_PROXY"
   integration_uri  = aws_lambda_function.this.invoke_arn
 }
 
-resource "aws_apigatewayv2_route" "this" {
+resource "aws_apigatewayv2_route" "route" {
   api_id    = aws_apigatewayv2_api.notification_api.id
   route_key = "POST /notify"
 
   target = "integrations/${aws_apigatewayv2_integration.this.id}"
 }
 
-resource "aws_apigatewayv2_stage" "this" {
+resource "aws_apigatewayv2_stage" "stage" {
   api_id      = aws_apigatewayv2_api.notification_api.id
   name        = "dev"
   auto_deploy = true
@@ -39,7 +39,7 @@ resource "aws_apigatewayv2_stage" "this" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "main_api_gw" {
+resource "aws_cloudwatch_log_group" "api_log_group" {
   name = "/aws/api-gw/${aws_apigatewayv2_api.notification_api.name}"
 
   retention_in_days = 30

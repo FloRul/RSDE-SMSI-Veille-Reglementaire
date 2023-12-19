@@ -11,7 +11,7 @@ data "archive_file" "lambda" {
   output_path = local.package_output_path
 }
 
-resource "aws_lambda_function" "this" {
+resource "aws_lambda_function" "notification_lambda" {
   function_name    = local.function_name
   handler          = local.lambda_handler
   runtime          = "python3.11"

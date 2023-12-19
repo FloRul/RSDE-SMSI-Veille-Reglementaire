@@ -1,6 +1,6 @@
-resource "aws_lightsail_instance" "this" {
+resource "aws_lightsail_instance" "change_detection_instance" {
   name              = "changedetection-instance-rsde-smsi"
-  availability_zone = "us-west-2a" # Replace with your desired availability zone
+  availability_zone = "ca-central-1"
   blueprint_id      = "amazon_linux_2"
   bundle_id         = "nano_2_0"
   add_on {
