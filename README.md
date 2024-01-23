@@ -43,7 +43,6 @@ Accédez au répertoire terraform du projet.
 Exécutez les commandes Terraform suivantes :
 
 ```bash
-Copy code
 terraform init
 terraform apply
 ```
