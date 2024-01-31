@@ -22,7 +22,7 @@ resource "aws_lambda_function" "notification_lambda" {
   architectures    = ["x86_64"]
   environment {
     variables = {
-      SES_FROM_EMAIL = aws_ses_email_identity.this.email
+      SES_FROM_EMAIL = aws_ses_email_identity.email_service.email
     }
   }
   provisioner "local-exec" {

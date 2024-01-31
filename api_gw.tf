@@ -6,14 +6,14 @@ resource "aws_apigatewayv2_api" "notification_api" {
 resource "aws_apigatewayv2_integration" "integration" {
   api_id           = aws_apigatewayv2_api.notification_api.id
   integration_type = "AWS_PROXY"
-  integration_uri  = aws_lambda_function.this.invoke_arn
+  integration_uri  = aws_lambda_function.notification_lambda.invoke_arn
 }
 
 resource "aws_apigatewayv2_route" "route" {
   api_id    = aws_apigatewayv2_api.notification_api.id
   route_key = "POST /notify"
 
-  target = "integrations/${aws_apigatewayv2_integration.this.id}"
+  target = "integrations/${aws_apigatewayv2_integration.integration.id}"
 }
 
 resource "aws_apigatewayv2_stage" "stage" {
@@ -21,7 +21,7 @@ resource "aws_apigatewayv2_stage" "stage" {
   name        = "dev"
   auto_deploy = true
   access_log_settings {
-    destination_arn = aws_cloudwatch_log_group.main_api_gw.arn
+    destination_arn = aws_cloudwatch_log_group.api_log_group.arn
 
     format = jsonencode({
       requestId               = "$context.requestId"
@@ -46,10 +46,10 @@ resource "aws_cloudwatch_log_group" "api_log_group" {
 }
 
 resource "aws_apigatewayv2_deployment" "notification_api_deployment" {
-  depends_on = [aws_apigatewayv2_route.this]
+  depends_on = [aws_apigatewayv2_route.route]
   api_id     = aws_apigatewayv2_api.notification_api.id
 }
 
 output "api_gateway_invoke_url" {
-  value = aws_apigatewayv2_stage.this.invoke_url
+  value = aws_apigatewayv2_stage.stage.invoke_url
 }

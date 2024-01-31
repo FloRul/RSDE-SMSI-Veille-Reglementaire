@@ -11,5 +11,5 @@ resource "aws_lightsail_instance" "change_detection_instance" {
 }
 
 output "instance_ip" {
-  value = aws_lightsail_instance.this.public_ip_address
+  value = aws_lightsail_instance.change_detection_instance.public_ip_address
 }
